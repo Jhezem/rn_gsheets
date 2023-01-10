@@ -1,11 +1,11 @@
-import {Box, ScrollView, Heading} from 'native-base';
+import {Box, ScrollView} from 'native-base';
 import {RefreshControl} from 'react-native';
-import React, {useState} from 'react';
 import BookCard from '../components/BookCard';
 import {useFetchBooks} from '../hooks/useBooks';
 import MySkeleton from '../components/Skeleton';
+import PlusButton from '../components/PlusButton';
 
-export default function Home() {
+export default function Home({navigation}) {
   const {isFetching, data, refetch} = useFetchBooks();
 
   const handleRefetch = () => refetch();
@@ -25,6 +25,7 @@ export default function Home() {
           <BookCard libros={data} />
         )}
       </ScrollView>
+      <PlusButton navigation={navigation} screen={'AddBook'} help={'Agregar Libro'}/>
     </Box>
   );
 }
