@@ -10,8 +10,23 @@ import {
   VStack,
 } from 'native-base';
 import React from 'react';
+import Icon from 'react-native-ionicons';
 
 export default function BookCard({libros}) {
+  if (!libros || Object.keys(libros).length === 0) {
+    return (
+      <Center p={5}>
+        <Heading color={'red.600'}>
+          Oops aun no hay libros <Icon name={'sad'} />
+        </Heading>
+        <Heading color={'#52FF33'} fontSize={20} mt={5}>
+          Intenta agregando un nuevo con el botón de abajo{' '}
+          <Icon name={'happy'} />
+        </Heading>
+      </Center>
+    );
+  }
+
   return (
     <VStack space={3} w={'100%'} px={3}>
       {libros.map(libro => {
@@ -29,8 +44,7 @@ export default function BookCard({libros}) {
               }}
               _light={{
                 backgroundColor: 'gray.50',
-              }}
-              >
+              }}>
               <Box>
                 <AspectRatio w={'100%'}>
                   <Image
@@ -73,9 +87,7 @@ export default function BookCard({libros}) {
                     {libro.authorName}
                   </Text>
                 </Stack>
-                <Text fontWeight="400">
-                  {libro.prologo}
-                </Text>
+                <Text fontWeight="400">{libro.prologo}</Text>
                 <HStack
                   alignItems="center"
                   space={4}
