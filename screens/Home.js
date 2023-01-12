@@ -22,7 +22,7 @@ export default function Home({navigation}) {
             <MySkeleton /> <MySkeleton />
           </Box>
         ) : (
-          <BookCard libros={data} />
+          <BookCard libros={data} navigation={navigation}/>
         )}
       </ScrollView>
       <PlusButton navigation={navigation} screen={'AddBook'} help={'Agregar Libro'}/>
