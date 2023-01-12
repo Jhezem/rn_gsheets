@@ -11,12 +11,14 @@ import {
 } from 'native-base';
 import Icon from 'react-native-ionicons';
 import Action, {CrudActions} from './Actions';
-import { update, remove } from '../utils/crudFunctions';
+import {update, remove} from '../utils/crudFunctions';
 import {usePostBooks} from '../hooks/useBooks';
+import Confirm from './Alerts/Confirm';
+import {useAlert} from './Alerts/Confirm';
 
 export default function BookCard({libros, navigation}) {
-
   const {mutate: removeBook, isLoading} = usePostBooks();
+  const [toggle, isOpen] = useAlert();
 
   if (!libros || Object.keys(libros).length === 0) {
     return (
@@ -30,6 +32,10 @@ export default function BookCard({libros, navigation}) {
         </Heading>
       </Center>
     );
+  }
+
+  const confirmDelete = () => {
+    toggle();
   }
 
   return (
@@ -107,10 +113,34 @@ export default function BookCard({libros, navigation}) {
                       {libro.publicacion}
                     </Text>
                     <CrudActions>
-                    <Action icon={'eye'} color={'#8b5cf6'} help={'Ver'} onPress={() => console.log('ver')}/>
-                    <Action icon={'brush'} color={'orange'} help={'Actualizar'} onPress={()=> update(navigation, libros, libro.id)}/>
-                    <Action icon={'remove-circle'} color={'red'} help={'Eliminar'} onPress={() => remove(libro.id, removeBook)}/>
+                      <Action
+                        icon={'eye'}
+                        color={'#8b5cf6'}
+                        help={'Ver'}
+                        onPress={() => console.log('ver')}
+                      />
+                      <Action
+                        icon={'brush'}
+                        color={'orange'}
+                        help={'Actualizar'}
+                        onPress={() => update(navigation, libros, libro.id)}
+                      />
+                      <Action
+                        icon={'remove-circle'}
+                        color={'red'}
+                        help={'Eliminar'}
+                        onPress={() => confirmDelete()}
+                      />
                     </CrudActions>
+                    <Confirm
+                      isOpen={isOpen}
+                      toggle={toggle}
+                      heading={'Eliminar libro'}
+                      description={'Seguro que deseas eliminar este libro?'}
+                      confirmText={'Eliminar'}
+                      cancelText={'Cancelar'}
+                      onConfirm={() => remove(libro.id, removeBook)}
+                    />
                   </HStack>
                 </HStack>
               </Stack>
