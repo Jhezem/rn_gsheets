@@ -15,9 +15,10 @@ import {update, remove} from '../utils/crudFunctions';
 import {usePostBooks} from '../hooks/useBooks';
 import Confirm from './Alerts/Confirm';
 import {useAlert} from './Alerts/Confirm';
+import Spinner from './Loading/Spinner';
 
 export default function BookCard({libros, navigation}) {
-  const {mutate: removeBook, isLoading} = usePostBooks();
+  const {mutate: removeBook, isLoading: isDeleting} = usePostBooks();
   const [toggle, isOpen] = useAlert();
 
   if (!libros || Object.keys(libros).length === 0) {
@@ -36,6 +37,10 @@ export default function BookCard({libros, navigation}) {
 
   const confirmDelete = () => {
     toggle();
+  }
+
+  if(isDeleting){
+    return <Spinner text={'Eliminando'} color={'orange'} textColor={'red'}/>;
   }
 
   return (
