@@ -1,35 +1,27 @@
-import React, {useState} from 'react';
 import {Center, VStack, Heading, Button} from 'native-base';
 import Input from './Input/Input';
-import { usePostBooks } from '../../hooks/useBooks';
-import { useForm } from '../../hooks/useForm';
+import {useForm} from '../../hooks/useForm';
+import {formatFormData} from '../../helpers/formatData';
 
-export default function Form() {
-  
-  const { mutate } = usePostBooks();
-  const {formData, setFormData, validateForm} = useForm({
-    name: '',
-    categoria: '',
-    tipo: '',
-  });
+export default function Form({inputs, title, onSubmit}) {
+  const {formData, setFormData, validateForm} = useForm(inputs);
 
   const handleChange = (value, name) => {
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData(current =>
+      current.map(input => {
+        if (input.name === name) {
+          return {...input, value: value};
+        }
+        return input;
+      }),
+    );
   };
 
-
-  const enviar = () => {
-    if(!validateForm()) return alert('Campos vacios');
-    const libroData = {
-        action: 'add',
-        collection: 'books',
-        data: formData
-    }
-    mutate(libroData);
-  }
+  const handleSubmit = callback => {
+    if (!validateForm()) return alert('Campos vacios');
+    const data = formatFormData(formData);
+    callback(data);
+  };
 
   return (
     <VStack
@@ -39,17 +31,25 @@ export default function Form() {
       pt={2}
       alignItems={'center'}>
       <Center width={'100%'}>
-        <Heading bold>Agregar libro</Heading>
-        <Input label={'Nombre'} handleChange={value => handleChange(value, 'name')} />
-        <Input label={'Categoria'} handleChange={value => handleChange(value, 'categoria')}/>
-        <Input label={'Tipo'} handleChange={value => handleChange(value, 'tipo')}/>
-        <Input label={'Precio'} handleChange={value => handleChange(value, 'price')}/>
-        <Input label={'Author ID'} handleChange={value => handleChange(value, 'authorId')}/>
-        <Input label={'Author'} handleChange={value => handleChange(value, 'authorName')}/>
-        <Input label={'Prologo'} handleChange={value => handleChange(value, 'prologo')}/>
-        <Input label={'Fecha de publicacion'} handleChange={value => handleChange(value, 'publicacion')}/>
-        <Input label={'Portada'} handleChange={value => handleChange(value, 'portada')}/>
-        <Button mt={5} mb={5} size={"lg"} onPress={enviar} backgroundColor={"#8b5cf6"}>Agregar</Button>
+        {title && <Heading bold>{title}</Heading>}
+        {formData.map((input, index) => {
+          return (
+            <Input
+              label={input.label}
+              handleChange={value => handleChange(value, input.name)}
+              key={index}
+              value={input.value}
+            />
+          );
+        })}
+        <Button
+          mt={5}
+          mb={5}
+          size={'lg'}
+          onPress={() => handleSubmit(onSubmit)}
+          backgroundColor={'#8b5cf6'}>
+          Agregar
+        </Button>
       </Center>
     </VStack>
   );
