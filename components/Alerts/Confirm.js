@@ -1,6 +1,14 @@
 import React, {useState, useRef} from 'react';
 import {Center, AlertDialog, Button} from 'native-base';
 
+export const useAlert = initial => {
+  const [isOpen, setIsOpen] = useState(initial || false);
+
+  const toggle = () => setIsOpen(!isOpen);
+
+  return [toggle, isOpen];
+};
+
 export default function Confirm({
   isOpen,
   heading,
