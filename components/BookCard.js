@@ -9,10 +9,15 @@ import {
   HStack,
   VStack,
 } from 'native-base';
-import React from 'react';
 import Icon from 'react-native-ionicons';
+import Action, {CrudActions} from './Actions';
+import { update, remove } from '../utils/crudFunctions';
+import {usePostBooks} from '../hooks/useBooks';
 
-export default function BookCard({libros}) {
+export default function BookCard({libros, navigation}) {
+
+  const {mutate: removeBook, isLoading} = usePostBooks();
+
   if (!libros || Object.keys(libros).length === 0) {
     return (
       <Center p={5}>
@@ -92,7 +97,7 @@ export default function BookCard({libros}) {
                   alignItems="center"
                   space={4}
                   justifyContent="space-between">
-                  <HStack alignItems="center">
+                  <HStack alignItems="center" space={10}>
                     <Text
                       color="coolGray.600"
                       _dark={{
@@ -101,6 +106,11 @@ export default function BookCard({libros}) {
                       fontWeight="400">
                       {libro.publicacion}
                     </Text>
+                    <CrudActions>
+                    <Action icon={'eye'} color={'#8b5cf6'} help={'Ver'} onPress={() => console.log('ver')}/>
+                    <Action icon={'brush'} color={'orange'} help={'Actualizar'} onPress={()=> update(navigation, libros, libro.id)}/>
+                    <Action icon={'remove-circle'} color={'red'} help={'Eliminar'} onPress={() => remove(libro.id, removeBook)}/>
+                    </CrudActions>
                   </HStack>
                 </HStack>
               </Stack>
