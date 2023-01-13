@@ -25,4 +25,14 @@ export const remove = (id, mutate) => {
   mutate(libroData);
 };
 
-export const view = (navigation, books, bookId) => {};
+/**
+ * View Book information
+ *
+ * @param {function} Navigation - React Navigation
+ * @param {array} books - Books data
+ * @param {string} bookId - The id of the book to view
+ */
+export const view = (navigation, books, bookId) => {
+  const currentBook = books.find(book => book.id === bookId);
+  navigation.navigate('Libro', {book: currentBook});
+};

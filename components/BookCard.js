@@ -11,7 +11,7 @@ import {
 } from 'native-base';
 import Icon from 'react-native-ionicons';
 import Action, {CrudActions} from './Actions';
-import {update, remove} from '../utils/crudFunctions';
+import {update, remove, view} from '../utils/crudFunctions';
 import {usePostBooks} from '../hooks/useBooks';
 import ConfirmDelete from './Alerts/Confirm';
 import {useAlert} from './Alerts/Confirm';
@@ -125,7 +125,7 @@ export default function BookCard({libros, navigation}) {
                         icon={'eye'}
                         color={'#8b5cf6'}
                         help={'Ver'}
-                        onPress={() => console.log('ver')}
+                        onPress={() => view(navigation, libros, libro.id)}
                       />
                       <Action
                         icon={'brush'}
