@@ -13,13 +13,15 @@ import Icon from 'react-native-ionicons';
 import Action, {CrudActions} from './Actions';
 import {update, remove} from '../utils/crudFunctions';
 import {usePostBooks} from '../hooks/useBooks';
-import Confirm from './Alerts/Confirm';
+import ConfirmDelete from './Alerts/Confirm';
 import {useAlert} from './Alerts/Confirm';
 import Spinner from './Loading/Spinner';
+import {useState} from 'react';
 
 export default function BookCard({libros, navigation}) {
   const {mutate: removeBook, isLoading: isDeleting} = usePostBooks();
   const [toggle, isOpen] = useAlert();
+  const [bookId, setBookId] = useState(null);
 
   if (!libros || Object.keys(libros).length === 0) {
     return (
@@ -35,12 +37,13 @@ export default function BookCard({libros, navigation}) {
     );
   }
 
-  const confirmDelete = () => {
+  const confirmDelete = bookId => {
     toggle();
-  }
+    setBookId(bookId);
+  };
 
-  if(isDeleting){
-    return <Spinner text={'Eliminando'} color={'orange'} textColor={'red'}/>;
+  if (isDeleting) {
+    return <Spinner text={'Eliminando'} color={'orange'} textColor={'red'} />;
   }
 
   return (
@@ -134,18 +137,9 @@ export default function BookCard({libros, navigation}) {
                         icon={'remove-circle'}
                         color={'red'}
                         help={'Eliminar'}
-                        onPress={() => confirmDelete()}
+                        onPress={() => confirmDelete(libro.id)}
                       />
                     </CrudActions>
-                    <Confirm
-                      isOpen={isOpen}
-                      toggle={toggle}
-                      heading={'Eliminar libro'}
-                      description={'Seguro que deseas eliminar este libro?'}
-                      confirmText={'Eliminar'}
-                      cancelText={'Cancelar'}
-                      onConfirm={() => remove(libro.id, removeBook)}
-                    />
                   </HStack>
                 </HStack>
               </Stack>
@@ -153,6 +147,18 @@ export default function BookCard({libros, navigation}) {
           </Box>
         );
       })}
+      <ConfirmDelete
+        isOpen={isOpen}
+        toggle={toggle}
+        heading={'Eliminar libro'}
+        description={'Seguro que deseas eliminar este libro?'}
+        confirmText={'Eliminar'}
+        cancelText={'Cancelar'}
+        onConfirm={() => {
+          remove(bookId, removeBook);
+          setBookId(null);
+        }}
+      />
     </VStack>
   );
 }
