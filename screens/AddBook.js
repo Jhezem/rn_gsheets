@@ -2,7 +2,7 @@ import Form from '../components/Form/Form';
 import {ScrollView} from 'native-base';
 import {getFormInputs} from '../utils/formInputs';
 import {usePostBooks} from '../hooks/useBooks';
-import {Spinner} from '../components/Loading/Spinner';
+import Spinner from '../components/Loading/Spinner';
 
 export default function AddBook() {
   const {mutate, isLoading: isAdding} = usePostBooks();
