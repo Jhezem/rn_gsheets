@@ -40,7 +40,7 @@ export const getFormInputs = book => {
     },
     {
       name: 'portada',
-      value: book?.portada ?? '',
+      value: book?.portada ?? 'https://i.picsum.photos/id/591/300/300.jpg?hmac=tA0S3YLt4H_ZuIDjMsEPcjYZZF1648-2N63fS1i6Lvs',
       label: 'Portada',
       required: true,
     },
