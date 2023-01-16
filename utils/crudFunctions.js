@@ -1,7 +1,7 @@
 /**
  * Update Book information
  *
- * @param {function} Navigation - React Navigation
+ * @param {function} navigation - React Navigation
  * @param {array} books - Books data
  * @param {string} bookId - The id of the book to update
  */
@@ -28,7 +28,7 @@ export const remove = (id, mutate) => {
 /**
  * View Book information
  *
- * @param {function} Navigation - React Navigation
+ * @param {function} navigation - React Navigation
  * @param {array} books - Books data
  * @param {string} bookId - The id of the book to view
  */
