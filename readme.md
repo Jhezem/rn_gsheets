@@ -10,3 +10,9 @@
 3) npx react-native start
 4) npx react-native run-android or npx react-native run-ios
 5) change .env.example to .env and add your google sheets web app endpoint (see backend branch for more instructions)
+
+See branch backend for instrucctions about the google sheets backend.
+
+Demo video
+
+[![Watch the video](https://img.youtube.com/vi/JmTRYxYoUdI/0.jpg)](https://youtu.be/JmTRYxYoUdI)
